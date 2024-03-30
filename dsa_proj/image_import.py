@@ -4,7 +4,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from colorthief import ColorThief
 
-image=r"C:\Users\LT\Downloads\dsa_proj\dsa.jpg"
+image=r"dsa_proj\dsa.jpg"
 
 #import the image file
 img=plt.imread(image)
