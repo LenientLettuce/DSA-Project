@@ -8,7 +8,7 @@ image=r"dsa_proj\dsa.jpg"
 
 #import the image file
 img=plt.imread(image)
-#get pixels
+#generates matrix
 print(img.shape)
 
 #dislay in a matplot window
