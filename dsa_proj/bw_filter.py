@@ -83,6 +83,6 @@ def convert_to_black_white(image_path, threshold=128):
 
     return img
 
-image_path = r"flower.jpg"
+image_path = r"dsa_proj\\flower.jpg"
 bw_image = convert_to_black_white(image_path, threshold=128)  # Set the threshold value as needed
 show_image(bw_image, "Black and White Image")
