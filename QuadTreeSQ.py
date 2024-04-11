@@ -21,14 +21,15 @@ def create_out_mat(r,c): #Creates a 3D matrix which stores RGB Values
     output = np.zeros((r,c,3),dtype=np.uint8)
     return output
 
-def conv_mat_img(matrix):
-    image = Image.fromarray(matrix, mode= "RBG")
+def conv_mat_img(image_data):
+    image = Image.fromarray(image_data, mode="RGB")
     image.save("CompressedImage.jpg")
 
 def img_comp(matrix,r,c,rows,columns,threshold,output_matrix):
     allsame = True
     total = [0,0,0]
     if r <= 1 and c <= 1: #Means image is only single pixel
+        output_matrix[rows + r][columns + c] = matrix[rows + r][columns + c]
         return
     if r <= 1: #Ensures recursion doesn't stop until both rows and columns are compressed
         r = 2
@@ -39,9 +40,8 @@ def img_comp(matrix,r,c,rows,columns,threshold,output_matrix):
             for j in range(c):
                 if allsame == True:
                     for k in range(0,3):
-                        data = matrix[rows + i][columns + j]
                         total[k] += matrix[rows + i][columns + j][k]
-                        if abs(int(matrix[rows][columns]) - int(matrix[rows + i][columns + j][k])) >= threshold[k]:
+                        if abs(int(matrix[rows][columns][k]) - int(matrix[rows + i][columns + j][k])) > threshold[k]:
                             allsame = False
                             break
                 else:
@@ -109,7 +109,7 @@ def main(image):
     c = shape[1]
     rows = 0
     columns = 0
-    threshold = [100,100,100]
+    threshold = [25,25,25]
     output_matrix = create_out_mat(r,c) #Creating the matrix which will eventually become the
                                         #compressed image
     print("Output Matrix Created")
@@ -131,7 +131,7 @@ def test_diff_aspect():
         quad_tree(matrix,r[i],c[i],0,0,50)
         show(matrix, "comp")
 
-#image=r"dsa_proj\\8kimg.jpg"
+image=r"dsa_proj\\flower.jpg"
 #image=r"Smoll.jpg"
-#main(image)
-test_diff_aspect()
+main(image)
+#test_diff_aspect()
