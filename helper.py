@@ -21,9 +21,9 @@ def create_out_mat(r,c): #Creates a 3D matrix which stores RGB Values
     output = np.zeros((r,c,3),dtype=np.uint8)
     return output
 
-def conv_mat_img(image_data):
+def conv_mat_img(image_data,name):
     image = Image.fromarray(image_data, mode="RGB")
-    image.save("CompressedImage.jpg")
+    image.save("Images\\" + name + ".jpg")
 
 def read_image(image_path):
     return Image.open(image_path)

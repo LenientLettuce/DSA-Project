@@ -64,6 +64,6 @@ def main(image):
     print("Image Compressed")
 
     print("Saving Compressed Image")
-    conv_mat_img(output_matrix)#converting output matrix to image and saving it
+    name = "CompressedImage"
+    conv_mat_img(output_matrix,name)#converting output matrix to image and saving it
     print("Complete")
-

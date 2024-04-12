@@ -14,7 +14,7 @@ def show(img,title):
     plt.title(title)
     plt.show()
 
-image=r"dsa_proj\dsa.jpg"
+image=r"dsa_proj\\dsa.jpg"
 
 #import the image file
 img=plt.imread(image)
