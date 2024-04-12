@@ -7,12 +7,14 @@ from helper import *
 
 
 def quad_tree(matrix,r,c,rows,columns,threshold): #Basic QuadTree Function
-    if r <= 1 and c <= 1: #Means image is only single pixel
+    if r <= 1 or c <= 1: #Means one or more dimension/s of image is only single hence image cannot be divided into 4
+        if r <= 1 and c <= 1: #means both dimensions are only single pixels
+            pass
+        elif r <= 1: #means rows are single pixel
+            pass    
+        elif c <= 1: #means columns are single pixel
+            pass
         return
-    if r <= 1: #Ensures recursion doesn't stop until both rows and columns are compressed
-        r = 2
-    if c <= 1:
-        c = 2
     allsame = True
     total = 0
     for i in range(r): #Loop checks whether each element within the quad tree is same or not

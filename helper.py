@@ -61,3 +61,27 @@ def create_smoll_img():
 
     image = Image.fromarray(image_data, mode="RGB")
     image.save("Images\\Smoll.jpg")
+
+def create_custom_img(r,c):
+    image_data = np.random.randint(255, size=(r,c,3))
+    image = Image.fromarray(image_data, mode="RGB")
+    image.save("Images\\Custom.jpg")
+
+def weighted_average(hist):
+    """Returns the weighted color average and error from a hisogram of pixles"""
+    total = sum(hist)
+    value, error = 0, 0
+    if total > 0:
+        value = sum(i * x for i, x in enumerate(hist)) / total
+        error = sum(x * (value - i) ** 2 for i, x in enumerate(hist)) / total
+        error = error ** 0.5
+    return value, error
+
+
+def color_from_histogram(hist):
+    """Returns the average rgb color from a given histogram of pixle color counts"""
+    r, re = weighted_average(hist[:256])
+    g, ge = weighted_average(hist[256:512])
+    b, be = weighted_average(hist[512:768])
+    e = re * 0.2989 + ge * 0.5870 + be * 0.1140
+    return (int(r), int(g), int(b)), e

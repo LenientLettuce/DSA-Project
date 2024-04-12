@@ -8,22 +8,53 @@ from helper import *
 def img_comp(matrix,r,c,rows,columns,threshold,output_matrix):
     allsame = True
     total = [0,0,0]
-    if r <= 1 and c <= 1: #Means image is only single pixel
-        output_matrix[rows + r][columns + c] = matrix[rows + r][columns + c]
+    if r <= 1 or c <= 1: #Means one dimension of image is only single pixel
+        if r <= 1 and c <= 1:
+            output_matrix[rows][columns] = matrix[rows][columns]
+        elif r <= 1:
+            for j in range(c):
+                for k in range(0,3):
+                            total[k] += matrix[rows][columns + j][k]
+                            if abs(int(matrix[rows][columns][k]) - int(matrix[rows][columns + j][k])) > threshold[k]:
+                                allsame = False
+                                break
+
+            if allsame:
+                for k in range(0,3):
+                    total[k] = total[k]//c
+                for j in range(c):
+                    output_matrix[rows][columns+j] = total
+            else:
+                for j in range(c):
+                    output_matrix[rows][columns+j] = matrix[rows][columns+j]
+            
+        elif c <= 1:
+            for i in range(r):
+                for k in range(0,3):
+                            total[k] += matrix[rows + i][columns][k]
+                            if abs(int(matrix[rows][columns][k]) - int(matrix[rows + i][columns][k])) > threshold[k]:
+                                allsame = False
+                                break
+
+            if allsame:
+                for k in range(0,3):
+                    total[k] = total[k]//r
+                for i in range(r):
+                    output_matrix[rows+i][columns] = total
+            else:
+                for i in range(r):
+                    output_matrix[rows+i][columns] = matrix[rows+i][columns]
         return
-    if r <= 1: #Ensures recursion doesn't stop until both rows and columns are compressed
-        r = 2
-    if c <= 1:
-        c = 2
+    
     for i in range(r): #Code to check if all pixels in img are within certain threshold
         if allsame == True:
             for j in range(c):
                 if allsame == True:
                     for k in range(0,3):
-                        total[k] += matrix[rows + i][columns + j][k]
-                        if abs(int(matrix[rows][columns][k]) - int(matrix[rows + i][columns + j][k])) > threshold[k]:
-                            allsame = False
-                            break
+                            total[k] += matrix[rows + i][columns + j][k]
+                            if abs(int(matrix[rows][columns][k]) - int(matrix[rows + i][columns + j][k])) > threshold[k]:
+                                allsame = False
+                                break
                 else:
                     break
         else:
@@ -31,20 +62,26 @@ def img_comp(matrix,r,c,rows,columns,threshold,output_matrix):
     
     if allsame: #if they are, it avg their value
         for k in range(0,3):
-            total[k] = total[k]//(r*c)
+            try:
+                total[k] = total[k]//(r*c)
+            except:
+                total[k] = total[k]
         for i in range(r):
             for j in range(c):
                 for k in range (3):
                     output_matrix[rows + i][columns + j][k] = np.uint8(math.floor(total[k]))
         return
     
-    r = r//2
-    c = c//2
 
+    r = (r)//2
+    c = (c)//2
     topleft = img_comp(matrix,r,c,rows,columns,threshold,output_matrix)
-    topright = img_comp(matrix,r,c,rows,columns+c,threshold,output_matrix)
-    bottomleft = img_comp(matrix,r,c,rows+r,columns,threshold,output_matrix)
-    bottomright = img_comp(matrix,r,c,rows+r,columns+c,threshold,output_matrix)
+    topright = img_comp(matrix,r,c,rows,columns + c,threshold,output_matrix)
+    bottomleft = img_comp(matrix,r,c,rows + r,columns,threshold,output_matrix)
+    bottomright = img_comp(matrix,r,c,rows + r,columns + c,threshold,output_matrix)
+
+        
+
 
 def main(image):
     img= read(image)
@@ -55,7 +92,7 @@ def main(image):
     c = shape[1]
     rows = 0
     columns = 0
-    threshold = [25,25,25]
+    threshold = [0,0,0]
     output_matrix = create_out_mat(r,c) #Creating the matrix which will eventually become the
                                         #compressed image
     print("Output Matrix Created")
@@ -64,6 +101,8 @@ def main(image):
     print("Image Compressed")
 
     print("Saving Compressed Image")
-    name = "CompressedImage"
+    name = "CompressedCustom"
     conv_mat_img(output_matrix,name)#converting output matrix to image and saving it
     print("Complete")
+
+main(r"Images\\Custom.jpg")
