@@ -2,10 +2,7 @@ import random as rand
 import numpy as np
 import matplotlib.pyplot as plt
 import math as math
-
-def def_mat(n):
-    output = np.random.randint(100, size=(n, n))
-    return output
+from helper import *
 
 def quad_tree(matrix, n, rows, columns): 
     allsame = True
@@ -31,7 +28,7 @@ def quad_tree(matrix, n, rows, columns):
 
 mat_size = 512 # also try 256, creates more varied result
                # higher values have issue of diluting into pink, but zooming in reveals that detail is still there
-matrix = def_mat(mat_size)
+matrix = def_mat(mat_size,mat_size)
 
 # original image visualization
 plt.imshow(matrix, cmap="plasma") 

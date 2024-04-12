@@ -2,15 +2,7 @@ import random as rand
 import numpy as np
 import matplotlib.pyplot as plt
 import math as math
-
-def def_mat(n):
-    output = np.random.randint(100, size=(n, n))
-    return output
-
-def show(img,title):
-    plt.imshow(img)
-    plt.title(title)
-    plt.show()
+from helper import *
 
 def quad_tree(matrix,r,c,rows,columns,threshold,scaled_mat,scale_factor): #Basic QuadTree Function
     if r <= 1 and c <= 1: #Means image is a single pixel
@@ -48,14 +40,9 @@ def quad_tree(matrix,r,c,rows,columns,threshold,scaled_mat,scale_factor): #Basic
     bottomleft = quad_tree(matrix,r,c,rows+r,columns,threshold,scaled_mat,scale_factor)
     bottomright = quad_tree(matrix,r,c,rows+r,columns+c,threshold,scaled_mat,scale_factor)
 
-
-def create_out_mat(r,c): #Creates a 3D matrix which stores RGB Values
-    output = np.zeros((r,c,3),dtype=np.uint8)
-    return output
-
 mat_size = 32  # works with any multiple of 4
 
-matrix = def_mat(mat_size)
+matrix = def_mat(mat_size,mat_size)
 
 # original image visualization
 show(matrix, "Original")
