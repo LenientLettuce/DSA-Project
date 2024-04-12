@@ -1,62 +1,71 @@
 import random as rand
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import math as math
-# from image_import import read
 
 def def_mat(n):
     output = np.random.randint(100, size=(n, n))
     return output
 
-def quad_tree(matrix, n, rows, columns): 
+def show(img,title):
+    plt.imshow(img)
+    plt.title(title)
+    plt.show()
+
+def quad_tree(matrix,r,c,rows,columns,threshold,scaled_mat,scale_factor): #Basic QuadTree Function
+    if r <= 1 and c <= 1: #Means image is a single pixel
+        return
+    if r <= 1: #Ensures recursion doesn't stop until both rows and columns are compressed
+        r = 2
+    if c <= 1:
+        c = 2
     allsame = True
-    for i in range(n): 
+    total = 0
+    for i in range(r): #Loop checks whether each element within the quad tree is same or not
         if allsame == True:
-            for j in range(n):
-                if np.all(matrix[rows][columns] != matrix[rows + i][columns + j]):
-                    allsame = False
-                    break
+            for j in range(c):
+                if (rows + i) < matrix.shape[0] and (columns + i) < matrix.shape[1]:
+                    total += matrix[rows + i][columns + j]
+                    if abs(matrix[rows][columns] - matrix[rows + i][columns + j]) > threshold:
+                        allsame = False
+                        break
         else:
             break
 
-    if allsame: 
-        return matrix[rows][columns]  # returning original value if allsame
+    if allsame: #if each element is same, then the section is kept as is
+        avg = (total)//(r*c)
+        for i in range(r):
+            for j in range(c):
+                if (rows//scale_factor) < scaled_matrix.shape[0] and (columns//scale_factor) < scaled_matrix.shape[1]:
+                    scaled_matrix[rows//scale_factor][columns//scale_factor] = avg
+        return
 
-    n = n//2 
-    topleft = quad_tree(matrix, n, rows, columns)
-    topright = quad_tree(matrix, n, rows, columns+n)
-    bottomleft = quad_tree(matrix, n, rows+n, columns)
-    bottomright = quad_tree(matrix, n, rows+n, columns+n)
-    
-    # print((topleft + topright + bottomleft + bottomright) // 4)
-    return ((topleft + topright + bottomleft + bottomright) // 4)  # returning average if all not same
+    r = r//2
+    c = c//2 
+    #if each element is not the same, then the section is divided into 4
+    topleft = quad_tree(matrix,r,c,rows,columns,threshold,scaled_mat,scale_factor)
+    topright = quad_tree(matrix,r,c,rows,columns+c,threshold,scaled_mat,scale_factor)
+    bottomleft = quad_tree(matrix,r,c,rows+r,columns,threshold,scaled_mat,scale_factor)
+    bottomright = quad_tree(matrix,r,c,rows+r,columns+c,threshold,scaled_mat,scale_factor)
 
-img = mpimg.imread(r"dsa_proj\dsatest.jpg")
-matrix = img
-mat_size = 1024
+
+def create_out_mat(r,c): #Creates a 3D matrix which stores RGB Values
+    output = np.zeros((r,c,3),dtype=np.uint8)
+    return output
+
+mat_size = 32  # works with any multiple of 4
+
+matrix = def_mat(mat_size)
 
 # original image visualization
-plt.imshow(matrix, cmap="gray") 
-plt.colorbar()
-plt.title("Original Matrix Visualization")
-plt.show()
+show(matrix, "Original")
 
-
+# scaled matrix initialization
 scale_factor = 4
+scaled_matrix = np.zeros((mat_size//scale_factor, mat_size//scale_factor))
 
-scaled_matrix = np.zeros((mat_size//scale_factor, mat_size//scale_factor))  # new matrix initialization
-for i in range(0, mat_size, scale_factor):  # iterating over original matrix
-    for j in range(0, mat_size, scale_factor):
-        result = quad_tree(matrix, 4, i, j)
-        scaled_matrix[i//4][j//4] = result[2]
-
-
-
-# scaled image visualization
-plt.imshow(scaled_matrix, cmap="gray") 
-plt.colorbar()
-plt.title("Scaled Matrix Visualization")
-plt.show()
+# scaled matrix visualization
+quad_tree(matrix, 512, 512, 0, 0, 40, scaled_matrix, scale_factor)
+show(scaled_matrix, "Downscaled Matrix")
 
 
