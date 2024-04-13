@@ -8,7 +8,7 @@ from helper import *
 def img_comp(matrix,r,c,rows,columns,threshold,output_matrix):
     allsame = True
     total = [0,0,0]
-    if r <= 1 or c <= 1: #Means one dimension of image is only single pixel
+    if r == 1 or c == 1: #Means one dimension of image is only single pixel
         if r <= 1 and c <= 1:
             output_matrix[rows][columns] = matrix[rows][columns]
         elif r <= 1:
@@ -80,6 +80,41 @@ def img_comp(matrix,r,c,rows,columns,threshold,output_matrix):
     bottomleft = img_comp(matrix,r,c,rows + r,columns,threshold,output_matrix)
     bottomright = img_comp(matrix,r,c,rows + r,columns + c,threshold,output_matrix)
 
+def new_comp(matrix, r, c, row, column,threshold,output_matrix):
+    # Base case: if the matrix is 1x1, 1xc, or rx1, return the value at the current position
+    if r == 1 and c == 1:
+        output_matrix[row][column] = matrix[row][column]
+        return
+    elif r == 1:
+        for j in range(0,c):
+            output_matrix[row][column+j] = matrix[row][column+j]
+        return
+    elif c == 1:
+        for i in range(0,r):
+            output_matrix[row+i][column] = matrix[row+i][column]
+        return
+
+    allSame = True
+    for i in range(r):
+        for j in range(c):
+            if np.all(matrix[row][column] - matrix[row + i][column + j]) > np.all(threshold):
+                allSame = False
+                break
+
+    if allSame:
+        for i in range(r):
+            for j in range(c):
+                output_matrix[row + i][column + j] = matrix[row + i][column + j]
+        return
+    
+    half_r = r // 2
+    half_c = c // 2
+    topleft = new_comp(matrix, half_r, half_c, row, column,threshold,output_matrix)
+    topright = new_comp(matrix, half_r, half_c, row, column + half_c,threshold,output_matrix)
+    bottomleft = new_comp(matrix, half_r, half_c, row + half_r, column,threshold,output_matrix)
+    bottomright = new_comp(matrix, half_r, half_c, row + half_r, column + half_c,threshold,output_matrix)
+    return
+
         
 
 
@@ -92,17 +127,17 @@ def main(image):
     c = shape[1]
     rows = 0
     columns = 0
-    threshold = [0,0,0]
+    threshold = [1,1,1]
     output_matrix = create_out_mat(r,c) #Creating the matrix which will eventually become the
                                         #compressed image
     print("Output Matrix Created")
     print("Compressing Image")
-    img_comp(img,r,c,rows,columns,threshold,output_matrix)
+    new_comp(img,r,c,rows,columns,threshold,output_matrix)
     print("Image Compressed")
 
     print("Saving Compressed Image")
-    name = "CompressedCustom"
+    name = "CompressedDSA"
     conv_mat_img(output_matrix,name)#converting output matrix to image and saving it
     print("Complete")
 
-main(r"Images\\Custom.jpg")
+main(r"Images\\dsa.jpg")
