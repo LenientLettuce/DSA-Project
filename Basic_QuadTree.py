@@ -6,42 +6,6 @@ from PIL import Image
 from helper import *
 
 
-def quad_tree(matrix,r,c,rows,columns,threshold): #Basic QuadTree Function
-    if r <= 1 or c <= 1: #Means one or more dimension/s of image is only single hence image cannot be divided into 4
-        if r <= 1 and c <= 1: #means both dimensions are only single pixels
-            pass
-        elif r <= 1: #means rows are single pixel
-            pass    
-        elif c <= 1: #means columns are single pixel
-            pass
-        return
-    allsame = True
-    total = 0
-    for i in range(r): #Loop checks whether each element within the quad tree is same or not
-        if allsame == True:
-            for j in range(c):
-                total += matrix[rows + i][columns + j]
-                if abs(matrix[rows][columns] - matrix[rows + i][columns + j]) > threshold:
-                    allsame = False
-                    break
-        else:
-            break
-
-    if allsame: #if each element is same, then the section is kept as is
-        avg = (total)//(r*c)
-        for i in range(r):
-            for j in range(c):
-                matrix[rows + i][columns + j] = avg
-        return
-
-    r = r//2
-    c = c//2 
-    #if each element is not the same, then the section is divided into 4
-    topleft = quad_tree(matrix,r,c,rows,columns,threshold)
-    topright = quad_tree(matrix,r,c,rows,columns+c,threshold)
-    bottomleft = quad_tree(matrix,r,c,rows+r,columns,threshold)
-    bottomright = quad_tree(matrix,r,c,rows+r,columns+c,threshold)
-
 def new_quad(matrix, rows, cols, row, column,threshold):
     # Base case: if the matrix is 1x1, 1xc, or rx1, return the value at the current position
     if rows == 1 and cols == 1:
