@@ -9,34 +9,50 @@ from helper import *
 def new_quad(matrix, rows, cols, row, column,threshold):
     # Base case: if the matrix is 1x1, 1xc, or rx1, return the value at the current position
     if rows == 1 and cols == 1:
+        try:
+            pass
+        except:
+            pass
         return
     elif rows == 1:
         for j in range(0,cols):
-            pass
+            try:
+                pass
+            except:
+                pass
         return
     elif cols == 1:
         for i in range(0,rows):
-            pass
+            try:
+                pass
+            except:
+                pass
         return
 
     allSame = True
     total = 0
     for i in range(rows):
         for j in range(cols):
-            total += matrix[row + i][column + j]
-            if abs(matrix[row][column] - matrix[row + i][column + j]) > threshold:
-                allSame = False
-                break
+            try:
+                total += matrix[row + i][column + j]
+                if abs(matrix[row][column] - matrix[row + i][column + j]) > threshold:
+                    allSame = False
+                    break
+            except:
+                pass
 
     if allSame:
-        avg = (total)//(row*column)
-        for i in range(rows):
-            for j in range(cols):
-                matrix[row + i][column + j] = avg
+        try:
+            avg = (total)//(row*column)
+            for i in range(rows):
+                for j in range(cols):
+                    matrix[row + i][column + j] = avg
+        except:
+            pass
         return
     
-    half_rows = rows // 2
-    half_cols = cols // 2
+    half_rows = (rows // 2) + (rows % 2)
+    half_cols = (cols // 2) + (cols % 2)
     topleft = new_quad(matrix, half_rows, half_cols, row, column,threshold)
     topright = new_quad(matrix, half_rows, half_cols, row, column + half_cols,threshold)
     bottomleft = new_quad(matrix, half_rows, half_cols, row + half_rows, column,threshold)

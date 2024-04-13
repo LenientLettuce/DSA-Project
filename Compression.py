@@ -82,33 +82,57 @@ def img_comp(matrix,r,c,rows,columns,threshold,output_matrix):
 
 def new_comp(matrix, r, c, row, column,threshold,output_matrix):
     # Base case: if the matrix is 1x1, 1xc, or rx1, return the value at the current position
+    total = [0,0,0]
     if r == 1 and c == 1:
-        output_matrix[row][column] = matrix[row][column]
+        try:
+            output_matrix[row][column] = matrix[row][column]
+        except:
+            pass
         return
     elif r == 1:
         for j in range(0,c):
-            output_matrix[row][column+j] = matrix[row][column+j]
+            try:
+                output_matrix[row][column+j] = matrix[row][column+j]
+            except:
+                pass
         return
     elif c == 1:
         for i in range(0,r):
-            output_matrix[row+i][column] = matrix[row+i][column]
+            try:
+                output_matrix[row+i][column] = matrix[row+i][column]
+            except:
+                pass
         return
 
     allSame = True
     for i in range(r):
         for j in range(c):
-            if np.all(matrix[row][column] - matrix[row + i][column + j]) > np.all(threshold):
-                allSame = False
-                break
+            for k in range(0,3):
+                try:
+                    total[k] += matrix[row + i][column + j][k]
+                    if abs(int(matrix[row][column][k]) - int(matrix[row + i][column + j][k])) > threshold[k]:
+                        allSame = False
+                        break
+                except:
+                    pass
 
     if allSame:
-        for i in range(r):
-            for j in range(c):
-                output_matrix[row + i][column + j] = matrix[row + i][column + j]
+        try:
+            for k in range(0,3):
+                total[k] = np.uint8(total[k]//(r*c))
+            for i in range(r):
+                for j in range(c):
+                    output_matrix[row + i][column + j] = total
+        except:
+            pass
         return
     
     half_r = r // 2
+    extra_r = r % 2
+    half_r = half_r + extra_r
     half_c = c // 2
+    extra_c = c % 2
+    half_c = half_c + extra_c
     topleft = new_comp(matrix, half_r, half_c, row, column,threshold,output_matrix)
     topright = new_comp(matrix, half_r, half_c, row, column + half_c,threshold,output_matrix)
     bottomleft = new_comp(matrix, half_r, half_c, row + half_r, column,threshold,output_matrix)
@@ -116,8 +140,6 @@ def new_comp(matrix, r, c, row, column,threshold,output_matrix):
     return
 
         
-
-
 def main(image):
     img= read(image)
     shape = (img.shape)
@@ -127,7 +149,7 @@ def main(image):
     c = shape[1]
     rows = 0
     columns = 0
-    threshold = [1,1,1]
+    threshold = [25,25,25]
     output_matrix = create_out_mat(r,c) #Creating the matrix which will eventually become the
                                         #compressed image
     print("Output Matrix Created")
@@ -136,8 +158,8 @@ def main(image):
     print("Image Compressed")
 
     print("Saving Compressed Image")
-    name = "CompressedDSA"
+    name = "Compressedflower"
     conv_mat_img(output_matrix,name)#converting output matrix to image and saving it
     print("Complete")
 
-main(r"Images\\dsa.jpg")
+main(r"Images\\flower.jpg")
