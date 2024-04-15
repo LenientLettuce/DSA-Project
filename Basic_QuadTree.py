@@ -51,13 +51,16 @@ def new_quad(matrix, rows, cols, row, column,threshold):
             pass
         return
     
-    half_rows = (rows // 2) + (rows % 2)
-    half_cols = (cols // 2) + (cols % 2)
-    topleft = new_quad(matrix, half_rows, half_cols, row, column,threshold)
-    topright = new_quad(matrix, half_rows, half_cols, row, column + half_cols,threshold)
-    bottomleft = new_quad(matrix, half_rows, half_cols, row + half_rows, column,threshold)
-    bottomright = new_quad(matrix, half_rows, half_cols, row + half_rows, column + half_cols,threshold)
+    half_r = rows // 2
+    extra_r = rows % 2
+    half_c = cols // 2
+    extra_c = cols % 2
+    topleft = new_quad(matrix, half_r, half_c, row, column,threshold)
+    topright = new_quad(matrix, half_r, half_c + extra_c, row, column + half_c,threshold)
+    bottomleft = new_quad(matrix, half_r + extra_r, half_c, row + half_r, column,threshold)
+    bottomright = new_quad(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c,threshold)
     return
+
 
 
 def test_diff_aspect():

@@ -129,14 +129,12 @@ def new_comp(matrix, r, c, row, column,threshold,output_matrix):
     
     half_r = r // 2
     extra_r = r % 2
-    half_r = half_r + extra_r
     half_c = c // 2
     extra_c = c % 2
-    half_c = half_c + extra_c
     topleft = new_comp(matrix, half_r, half_c, row, column,threshold,output_matrix)
-    topright = new_comp(matrix, half_r, half_c, row, column + half_c,threshold,output_matrix)
-    bottomleft = new_comp(matrix, half_r, half_c, row + half_r, column,threshold,output_matrix)
-    bottomright = new_comp(matrix, half_r, half_c, row + half_r, column + half_c,threshold,output_matrix)
+    topright = new_comp(matrix, half_r, half_c + extra_c, row, column + half_c,threshold,output_matrix)
+    bottomleft = new_comp(matrix, half_r + extra_r, half_c, row + half_r, column,threshold,output_matrix)
+    bottomright = new_comp(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c,threshold,output_matrix)
     return
 
         
@@ -149,7 +147,7 @@ def main(image):
     c = shape[1]
     rows = 0
     columns = 0
-    threshold = [25,25,25]
+    threshold = [1,1,1]
     output_matrix = create_out_mat(r,c) #Creating the matrix which will eventually become the
                                         #compressed image
     print("Output Matrix Created")
