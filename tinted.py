@@ -93,13 +93,7 @@ def quad_tree(matrix, rows, cols, row, column, threshold, dominant_colour, pixel
             
         return
 
-    if row >= len(matrix) or column >= len(matrix[0]):
-        return
 
-    if row + rows > len(matrix):
-        rows = len(matrix) - row
-    if column + cols > len(matrix[0]):
-        cols = len(matrix[0]) - column
 
 
 
