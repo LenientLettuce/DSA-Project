@@ -2,6 +2,7 @@ import random as rand
 import numpy as np
 import matplotlib.pyplot as plt
 import math as math
+import cv2
 from helper import *
 
 def new_quad(matrix, rows, cols, row, column, scaled_mat, scale_factor):
@@ -73,23 +74,17 @@ def new_quad(matrix, rows, cols, row, column, scaled_mat, scale_factor):
     bottomright = new_quad(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c, scaled_mat, scale_factor)
     return
 
-# # matrix initialization
-# mat_size = 32  # works with any multiple of 4
-# matrix = def_mat(mat_size,mat_size)
-
-# # original image visualization
-# show(matrix, "Original")
-
-# # scaled matrix initialization
-# scale_factor = 4
-# scaled_matrix = np.zeros((mat_size//scale_factor, mat_size//scale_factor))
-
-# # scaled matrix visualization
-# quad_tree(matrix, 512, 512, 0, 0, 40, scaled_matrix, scale_factor)
-# show(scaled_matrix, "Downscaled Matrix")
+def upscale(img_path):
+    img = cv2.imread(img_path)
+    sr = cv2.dnn_superres.DnnSuperResImpl_create()
+    path = "EDSR_x4.pb"
+    sr.readModel(path)
+    sr.setModel("edsr", 4)
+    result = sr.upsample(img)
+    return result
 
 # image initialization & visualization
-img_ad = r"Images\\dsatest.jpg"
+img_ad = r"Images\\8kimg.jpg"
 img = read(img_ad)
 show(img, "Original Image")
 
@@ -97,6 +92,10 @@ show(img, "Original Image")
 scale_factor = 4
 scaled_image = create_out_mat(img.shape[0]//scale_factor, img.shape[1]//scale_factor)
 
-# scaled image visualization
+#scaled image visualization
 new_quad(img, img.shape[0], img.shape[1], 0, 0, scaled_image, scale_factor)
-show(scaled_image, f"Scaled image, Threshold: -1")
+show(scaled_image, f"Scaled image, Scale Factor: {scale_factor}")
+
+conv_mat_img(scaled_image, "downscale_test")
+downscaled_path = "Images\\downscale_test.jpg"
+conv_mat_img(upscale(downscaled_path), "Upscaled8K")
