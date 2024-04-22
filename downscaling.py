@@ -77,14 +77,14 @@ def new_quad(matrix, rows, cols, row, column, scaled_mat, scale_factor):
 def upscale(img_path):
     img = cv2.imread(img_path)
     sr = cv2.dnn_superres.DnnSuperResImpl_create()
-    path = "EDSR_x4.pb"
+    path = "LapSRN_x4.pb"
     sr.readModel(path)
-    sr.setModel("edsr", 4)
+    sr.setModel("lapsrn", 4)
     result = sr.upsample(img)
     return result
 
 # image initialization & visualization
-img_ad = r"Images\\8kimg.jpg"
+img_ad = r"Images\\colour.jpg"
 img = read(img_ad)
 show(img, "Original Image")
 
@@ -98,4 +98,4 @@ show(scaled_image, f"Scaled image, Scale Factor: {scale_factor}")
 
 conv_mat_img(scaled_image, "downscale_test")
 downscaled_path = "Images\\downscale_test.jpg"
-conv_mat_img(upscale(downscaled_path), "Upscaled8K")
+show(upscale(downscaled_path), f"Upscaled from downscaled image | Scale Factor: 4")
