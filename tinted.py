@@ -43,57 +43,31 @@ def quad_tree(matrix, rows, cols, row, column, threshold, dominant_colour, pixel
         pixels[row, column] = tinted_color
         return
     elif rows == 1:
-        original_color = pixels[row, column]
-        tinted_color = (
-             min(int(original_color[0] + (dominant_colour[0] - original_color[0]) * tint_factor), 255),
-            min(int(original_color[1] + (dominant_colour[1] - original_color[1]) * tint_factor), 255),
-            min(int(original_color[2] + (dominant_colour[2] - original_color[2]) * tint_factor), 255)
-        )
-        pixels[row, column] = tinted_color
-        pixels[row, column] = tinted_color
-        original_color = pixels[row, column+1]
-        tinted_color = (
-          min(int(original_color[0] + (dominant_colour[0] - original_color[0]) * tint_factor), 255),
-            min(int(original_color[1] + (dominant_colour[1] - original_color[1]) * tint_factor), 255),
-            min(int(original_color[2] + (dominant_colour[2] - original_color[2]) * tint_factor), 255)
-        )
-         
-        pixels[row, column+1] = tinted_color
+        
+        
+        
         for j in range(0,cols):
-            try:
-                 
-                pass
-            except:
-                pass
+            original_color = pixels[row, column+j]
+            tinted_color = (
+            min(int(original_color[0] + (dominant_colour[0] - original_color[0]) * tint_factor), 255),
+            min(int(original_color[1] + (dominant_colour[1] - original_color[1]) * tint_factor), 255),
+            min(int(original_color[2] + (dominant_colour[2] - original_color[2]) * tint_factor), 255))
+         
+            pixels[row, column+j] = tinted_color
             
         return
     elif cols == 1:
-        original_color = pixels[row, column]
-        tinted_color = (
-          min(int(original_color[0] + (dominant_colour[0] - original_color[0]) * tint_factor), 255),
-            min(int(original_color[1] + (dominant_colour[1] - original_color[1]) * tint_factor), 255),
-            min(int(original_color[2] + (dominant_colour[2] - original_color[2]) * tint_factor), 255)
-        )
-         
-        pixels[row, column] = tinted_color
-        original_color = pixels[row+1, column]
-        tinted_color = (
-          min(int(original_color[0] + (dominant_colour[0] - original_color[0]) * tint_factor), 255),
-            min(int(original_color[1] + (dominant_colour[1] - original_color[1]) * tint_factor), 255),
-            min(int(original_color[2] + (dominant_colour[2] - original_color[2]) * tint_factor), 255)
-        )
-         
-        pixels[row+1, column] = tinted_color
         
         for i in range(0,rows):
-            try:
-                pass
-            except:
-                pass
+            original_color = pixels[row+i, column]
+            tinted_color = (
+            min(int(original_color[0] + (dominant_colour[0] - original_color[0]) * tint_factor), 255),
+            min(int(original_color[1] + (dominant_colour[1] - original_color[1]) * tint_factor), 255),
+            min(int(original_color[2] + (dominant_colour[2] - original_color[2]) * tint_factor), 255))
+         
+            pixels[row+i, column] = tinted_color
             
         return
-
-
 
 
 
@@ -112,11 +86,14 @@ def quad_tree(matrix, rows, cols, row, column, threshold, dominant_colour, pixel
 
 
             
-image_path = r"colour.jpg"
+image_path = r"city 2.jpg"
 original = read_image(image_path)
 original.show()
 
 tinted_image = create_tinted_image(image_path)
 tinted_image.show()
+
+
+
 
 
