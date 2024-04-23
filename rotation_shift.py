@@ -26,6 +26,8 @@ def rotation(matrix, r, c, row, column,output_mat,req_depth,depth=1):
                 except:
                     pass
         return
+    
+    # quadtree call if depth not reached
     topleft = rotation(matrix, half_r, half_c, row, column,output_mat,req_depth,depth+1)
     topright = rotation(matrix, half_r, half_c + extra_c, row, column + half_c,output_mat,req_depth,depth+1)
     bottomleft = rotation(matrix, half_r + extra_r, half_c, row + half_r, column,output_mat,req_depth,depth+1)
@@ -33,14 +35,20 @@ def rotation(matrix, r, c, row, column,output_mat,req_depth,depth=1):
     
     return
 
-# image initialization & visualization
-img_ad = r"Images\\city.jpeg"
-img = read(img_ad)
-show(img, "Original Image")
+def main(filename, depth):
+    # image initialization & visualization
+    img = read(f"Images\\{filename}")
+    show(img, "Original Image")
 
-# rotated image matrix initialization
-rotated_image = create_out_mat(img.shape[0], img.shape[1])
-depth = 5
-#scaled image visualization
-rotation(img, img.shape[0], img.shape[1], 0, 0, rotated_image, depth)
-show(rotated_image, f"Rotated image, Depth: {depth}")
+    # rotated image matrix initialization
+    rotated_image = create_out_mat(img.shape[0], img.shape[1])
+    #scaled image visualization
+    rotation(img, img.shape[0], img.shape[1], 0, 0, rotated_image, depth)
+    show(rotated_image, f"Rotated image, Depth: {depth}")
+
+filename = input("What is the name of the image file you would like to use?\n")
+depth = int(input("What depth would you like to run?\n"))
+
+main(filename, depth)
+
+# main("city.jpeg", 1)

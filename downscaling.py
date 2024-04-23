@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 import math as math
 import cv2
 from helper import *
-import tensorflow as tf
+# import tensorflow as tf
 
 def new_quad(matrix, rows, cols, row, column, scaled_mat, scale_factor):
-    # Base case: if the matrix is 1x1, 1xc, or rx1, return the value at the current position
+    # Base cases: if the matrix is 1x1, 1xc, or rx1, return the value at the current position
     if rows == 1 and cols == 1:
         try:
             scaled_mat[row//scale_factor][column//scale_factor] = matrix[row][column]
@@ -29,29 +29,37 @@ def new_quad(matrix, rows, cols, row, column, scaled_mat, scale_factor):
                 pass
         return
 
+    # sameness check
     allSame = True
+    
+    # rgb value totals
     total_r = total_g = total_b = 0
     for i in range(rows):
         for j in range(cols):
             try:
+                # image shape checking
                 if (row + i) < matrix.shape[0] and (column + i) < matrix.shape[1]:
+                    # rgb value total incrementing
                     total_r += matrix[row + i][column + j][0]
                     total_g += matrix[row + i][column + j][1]
                     total_b += matrix[row + i][column + j][2]
                     if len(matrix[row][column]) == 1:
+                        # similarity checking, very strict
                         if abs(matrix[row][column] - matrix[row + i][column + j]) > -1:
                             allSame = False
                             break
                     else:
                         total_diff = 0
                         for k in range(2):
+                            # total rgb diff
                             total_diff += abs(float(matrix[row][column][k]) - float(matrix[row + i][column + j][k]))
+                        # similarity checking, very strict
                         if total_diff//3 > -1:
                             allSame = False
                             break
             except:
                 pass
-
+    # downscaled pixel assigment after sameness check
     if allSame:
         try:
             avg_r = (total_r)//(rows*cols)
@@ -65,6 +73,7 @@ def new_quad(matrix, rows, cols, row, column, scaled_mat, scale_factor):
             pass
         return
     
+    # quadtree division
     half_r = rows // 2
     extra_r = rows % 2
     half_c = cols // 2
@@ -75,7 +84,9 @@ def new_quad(matrix, rows, cols, row, column, scaled_mat, scale_factor):
     bottomright = new_quad(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c, scaled_mat, scale_factor)
     return
 
+
 def upscale1(img_path):
+    # initializing and running opencv super resolution
     image = cv2.imread(img_path, cv2.IMREAD_COLOR)
     sr = cv2.dnn_superres.DnnSuperResImpl_create()
     path = "LapSRN_x4.pb"
@@ -85,21 +96,31 @@ def upscale1(img_path):
     result = cv2.cvtColor(result, cv2.COLOR_RGB2BGR)
     return result
 
-# image initialization & visualization
-img_ad = r"Images\\city.jpeg"
-img = read(img_ad)
-show(img, "Original Image")
+def main(filename, scale_factor):
+    # image initialization & visualization
+    img = read(f"Images\\{filename}")
+    show(img, "Original Image")
 
-# scaled image matrix initialization
-scale_factor = 4
-scaled_image = create_out_mat(img.shape[0]//scale_factor, img.shape[1]//scale_factor)
+    # scaled image matrix initialization
+    scaled_image = create_out_mat(img.shape[0]//scale_factor, img.shape[1]//scale_factor)
 
-#scaled image visualization
-new_quad(img, img.shape[0], img.shape[1], 0, 0, scaled_image, scale_factor)
-show(scaled_image, f"Scaled image, Scale Factor: {scale_factor}")
+    #scaled image visualization
+    new_quad(img, img.shape[0], img.shape[1], 0, 0, scaled_image, scale_factor)
+    show(scaled_image, f"Scaled image, Scale Factor: {scale_factor}")
 
-conv_mat_img(scaled_image, "Interpolation\\downscale_test")
-downscaled_path = "Images\\Interpolation\\downscale_test.jpg"
-image = upscale1(downscaled_path)
-conv_mat_img(image,"Interpolation\\upscaled_Test")
-show(image, f"Upscaled from downscaled image | Scale Factor: 4")
+    conv_mat_img(scaled_image, "Interpolation\\downscale_test")
+    downscaled_path = "Images\\Interpolation\\downscale_test.jpg"
+    image = upscale1(downscaled_path)
+    conv_mat_img(image,"Interpolation\\upscaled_Test")
+    show(image, f"Upscaled from downscaled image | Scale Factor: 4")
+
+filename = input("What is the name of the image file you would like to use?\n")
+scale_factor = int(input("What scale_factor would you like to run? Choose 4 or 8\n"))
+
+if scale_factor == 4 or scale_factor == 8:
+    main(filename, scale_factor)
+else:
+    print("That is not a valid scale factor.")
+
+# main("city.jpeg", 4)
+
