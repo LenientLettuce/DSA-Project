@@ -58,7 +58,7 @@ def quad_tree(matrix, rows, cols, row, column, pixels, contrast_factor):
 
 
 # image file path
-image_path = r"colour.jpg"
+image_path = r"Images\\colour.jpg"
 
 # display the original image
 original = read_image(image_path)
