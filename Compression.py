@@ -5,9 +5,11 @@ import math as math
 from PIL import Image
 from helper import *
 
+#Function for threshold based compression
 def full_comp(matrix, r, c, row, column,threshold,output_matrix):
     # Base case: if the matrix is 1x1, 1xc, or rx1, return the value at the current position
     total = [0,0,0]
+    #If Base case is met then set new pixels as original pixel vals
     if r == 1 and c == 1:
         try:
             output_matrix[row][column] = matrix[row][column]
@@ -30,6 +32,7 @@ def full_comp(matrix, r, c, row, column,threshold,output_matrix):
         return
 
     allSame = True
+    #Loop to check if pixels in quadrant fall under certain threshold
     for i in range(r):
         for j in range(c):
             for k in range(0,3):
@@ -40,10 +43,12 @@ def full_comp(matrix, r, c, row, column,threshold,output_matrix):
                         break
                 except:
                     pass
-
+    
+    #If under threshold, then take avg and set as value and return
     if allSame:
         try:
             for k in range(0,3):
+                #Finding average
                 total[k] = np.uint8(total[k]//(r*c))
             for i in range(r):
                 for j in range(c):
@@ -52,6 +57,7 @@ def full_comp(matrix, r, c, row, column,threshold,output_matrix):
             pass
         return
     
+    #If not within certain avg, then subdivide into further 4 quadrants
     half_r = r // 2
     extra_r = r % 2
     half_c = c // 2
@@ -62,8 +68,11 @@ def full_comp(matrix, r, c, row, column,threshold,output_matrix):
     bottomright = full_comp(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c,threshold,output_matrix)
     return
 
+#Function for depth based compression
 def depth_compression(matrix, r, c, row, column,depth,req_depth,output_matrix):
+    #Base case if required depth is met
     if depth == req_depth:
+        #If required depth is met, then find avg value of pixels and set that as value
         total = [0,0,0]
         for i in range(r):
             for j in range(c):
@@ -83,6 +92,7 @@ def depth_compression(matrix, r, c, row, column,depth,req_depth,output_matrix):
             pass
         return
     
+    #If required depth not met, then subdivide further
     half_r = r // 2
     extra_r = r % 2
     half_c = c // 2
@@ -95,6 +105,7 @@ def depth_compression(matrix, r, c, row, column,depth,req_depth,output_matrix):
 
         
 def mainf(image):
+    #Importing Image
     img= read(image)
     shape = (img.shape)
     print("Image Imported")
@@ -103,12 +114,13 @@ def mainf(image):
     c = shape[1]
     rows = 0
     columns = 0
-    stregth = 25
+    stregth = 25 #setting threshold strength
     threshold = [stregth,stregth,stregth]
     output_matrix = create_out_mat(r,c) #Creating the matrix which will eventually become the
                                         #compressed image
     print("Output Matrix Created")
     print("Compressing Image")
+    #Compressing image
     full_comp(img,r,c,rows,columns,threshold,output_matrix)
     print("Image Compressed")
 
@@ -131,6 +143,7 @@ def maind(image):
                                         #compressed image
     print("Output Matrix Created")
     print("Compressing Image")
+    #Code to make cool gif showing compression
     for i in range(0,9):
         depth_compression(img,r,c,rows,columns,0,i,output_matrix)
         image = Image.fromarray(output_matrix, mode="RGB")
@@ -140,6 +153,7 @@ def maind(image):
     create_gif(gif, "Images\\Gif\\City")  
     print("Complete")
 
+#Function to create gif from given images and then save
 def create_gif(images,name):
     first = images[0]
     first.save(name + ".gif",format = "GIF", append_images = images, save_all = True, duration = 300, loop = 1)

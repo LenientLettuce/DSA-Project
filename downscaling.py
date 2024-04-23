@@ -85,11 +85,8 @@ def upscale1(img_path):
     result = cv2.cvtColor(result, cv2.COLOR_RGB2BGR)
     return result
 
-def normalize(image):
-    pass
-
 # image initialization & visualization
-img_ad = r"Images\\colour.jpg"
+img_ad = r"Images\\city.jpeg"
 img = read(img_ad)
 show(img, "Original Image")
 
