@@ -4,10 +4,10 @@ def read_image(image_path):
     return Image.open(image_path)
 
 def calculate_gray_value(value):
-    # Calculate grayscale value using the luminosity method
+    # calculate grayscale value using the luminosity method
     return int(0.2989 * value + 0.5870 * value + 0.1140 * value)
 
-
+#calls on the quad tree function and creates the grayscale image
 def convert_to_grayscale(image_path):
     img = Image.open(image_path)
 
@@ -26,8 +26,8 @@ def quad_tree(matrix, rows, cols, row, column, pixels):
     
     if rows == 1 and cols == 1:
         original_color = pixels[row, column]
-        gray_value = calculate_gray_value(original_color[0])  # Assuming grayscale is in the first channel
-        pixels[row, column] = (gray_value, gray_value, gray_value)  # Set RGB values for grayscale
+        gray_value = calculate_gray_value(original_color[0])  # assuming grayscale is in the first channel
+        pixels[row, column] = (gray_value, gray_value, gray_value)  # set RGB values for grayscale
         return
     
     elif rows == 1:
