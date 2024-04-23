@@ -4,6 +4,7 @@ def read_image(image_path):
     return Image.open(image_path)
 
 def get_dominant_colour(matrix):
+    #gets dominant colour by creating a dictionary of all rgb tuples in the matrix and finding the one which has the max count
     colour_count = {}
     for row in matrix:
         for pixel in row:
@@ -36,13 +37,13 @@ def quad_tree(matrix, rows, cols, row, column, threshold, dominant_colour, pixel
        
         original_color = pixels[row, column]
         tinted_color = (
-            min(int(original_color[0] + (dominant_colour[0] - original_color[0]) * tint_factor), 255),
+            min(int(original_color[0] + (dominant_colour[0] - original_color[0]) * tint_factor), 255),       #applies tint by accessing each integer in rgb original colour tuple and adding the dominant colur value to it , then multiplying by tint factor
             min(int(original_color[1] + (dominant_colour[1] - original_color[1]) * tint_factor), 255),
             min(int(original_color[2] + (dominant_colour[2] - original_color[2]) * tint_factor), 255)
         )
         pixels[row, column] = tinted_color
         return
-    elif rows == 1:
+    elif rows == 1:          #if rows==1, then making sure that all the columns are coloured
         
         
         
