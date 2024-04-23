@@ -36,7 +36,7 @@ def quad_tree(matrix, rows, cols, row, column, threshold, dominant_colour, pixel
        
         original_color = pixels[row, column]
         tinted_color = (
-              min(int(original_color[0] + (dominant_colour[0] - original_color[0]) * tint_factor), 255),
+            min(int(original_color[0] + (dominant_colour[0] - original_color[0]) * tint_factor), 255),
             min(int(original_color[1] + (dominant_colour[1] - original_color[1]) * tint_factor), 255),
             min(int(original_color[2] + (dominant_colour[2] - original_color[2]) * tint_factor), 255)
         )
@@ -85,8 +85,8 @@ def quad_tree(matrix, rows, cols, row, column, threshold, dominant_colour, pixel
     quad_tree(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c,threshold, dominant_colour, pixels, tint_factor)
 
 
-            
-image_path = r"city 2.jpg"
+
+image_path = r"Images\\city.jpeg"
 original = read_image(image_path)
 original.show()
 

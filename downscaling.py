@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import math as math
 import cv2
 from helper import *
+import tensorflow as tf
 
 def new_quad(matrix, rows, cols, row, column, scaled_mat, scale_factor):
     # Base case: if the matrix is 1x1, 1xc, or rx1, return the value at the current position
@@ -11,21 +12,21 @@ def new_quad(matrix, rows, cols, row, column, scaled_mat, scale_factor):
         try:
             scaled_mat[row//scale_factor][column//scale_factor] = matrix[row][column]
         except:
-            print("1, 1 cond passed")
+            pass
         return
     elif rows == 1:
         for j in range(0,cols):
             try:
                 scaled_mat[row//scale_factor][(column+j)//scale_factor] = matrix[row][column+j]
             except:
-                print("1 row, n cols cond passed")
+                pass
         return
     elif cols == 1:
         for i in range(0,rows):
             try:
                 scaled_mat[(row+i)//scale_factor][column//scale_factor] = matrix[row+i][column]
             except:
-                print("n rows, 1 col cond passed")
+                pass
         return
 
     allSame = True
@@ -49,7 +50,7 @@ def new_quad(matrix, rows, cols, row, column, scaled_mat, scale_factor):
                             allSame = False
                             break
             except:
-                print("exception 1")
+                pass
 
     if allSame:
         try:
@@ -61,7 +62,7 @@ def new_quad(matrix, rows, cols, row, column, scaled_mat, scale_factor):
                     if (rows//scale_factor) < scaled_mat.shape[0] and (cols//scale_factor) < scaled_mat.shape[1]:
                         scaled_mat[row//scale_factor][column//scale_factor] = [avg_r, avg_g, avg_b]
         except:
-            print("exception 2")
+            pass
         return
     
     half_r = rows // 2
@@ -74,14 +75,18 @@ def new_quad(matrix, rows, cols, row, column, scaled_mat, scale_factor):
     bottomright = new_quad(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c, scaled_mat, scale_factor)
     return
 
-def upscale(img_path):
-    img = cv2.imread(img_path)
+def upscale1(img_path):
+    image = cv2.imread(img_path, cv2.IMREAD_COLOR)
     sr = cv2.dnn_superres.DnnSuperResImpl_create()
     path = "LapSRN_x4.pb"
     sr.readModel(path)
     sr.setModel("lapsrn", 4)
-    result = sr.upsample(img)
+    result = sr.upsample(image)
+    result = cv2.cvtColor(result, cv2.COLOR_RGB2BGR)
     return result
+
+def normalize(image):
+    pass
 
 # image initialization & visualization
 img_ad = r"Images\\colour.jpg"
@@ -96,6 +101,8 @@ scaled_image = create_out_mat(img.shape[0]//scale_factor, img.shape[1]//scale_fa
 new_quad(img, img.shape[0], img.shape[1], 0, 0, scaled_image, scale_factor)
 show(scaled_image, f"Scaled image, Scale Factor: {scale_factor}")
 
-conv_mat_img(scaled_image, "downscale_test")
-downscaled_path = "Images\\downscale_test.jpg"
-show(upscale(downscaled_path), f"Upscaled from downscaled image | Scale Factor: 4")
+conv_mat_img(scaled_image, "Interpolation\\downscale_test")
+downscaled_path = "Images\\Interpolation\\downscale_test.jpg"
+image = upscale1(downscaled_path)
+conv_mat_img(image,"Interpolation\\upscaled_Test")
+show(image, f"Upscaled from downscaled image | Scale Factor: 4")

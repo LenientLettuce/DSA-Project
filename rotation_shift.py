@@ -24,13 +24,12 @@ def rotation(matrix, r, c, row, column,output_mat,req_depth,depth=1):
                     # BL -> TL
                     output_mat[row + i][column + j] = matrix[row + total_r + i][column + j]
                 except:
-                    print("pass 1")
+                    pass
         return
     topleft = rotation(matrix, half_r, half_c, row, column,output_mat,req_depth,depth+1)
     topright = rotation(matrix, half_r, half_c + extra_c, row, column + half_c,output_mat,req_depth,depth+1)
     bottomleft = rotation(matrix, half_r + extra_r, half_c, row + half_r, column,output_mat,req_depth,depth+1)
     bottomright = rotation(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c,output_mat,req_depth,depth+1)
-    show(rotated_image, f"Rotated image, Depth: {depth}")
     
     return
 
@@ -41,7 +40,7 @@ show(img, "Original Image")
 
 # rotated image matrix initialization
 rotated_image = create_out_mat(img.shape[0], img.shape[1])
-depth = 4
+depth = 5
 #scaled image visualization
 rotation(img, img.shape[0], img.shape[1], 0, 0, rotated_image, depth)
 show(rotated_image, f"Rotated image, Depth: {depth}")

@@ -15,8 +15,7 @@ def rotation(matrix, r, c, row, column,output_mat,req_depth,depth=1):
                 try:
                     output_mat[column + j][row + i] = matrix[row + i][column + j] 
                 except:
-                    print("pass 1")
-        show(rotated_image, f"Rotated image, Depth: {depth}")
+                    pass
         return
     topleft = rotation(matrix, half_r, half_c, row, column,output_mat,req_depth,depth+1)
     topright = rotation(matrix, half_r, half_c + extra_c, row, column + half_c,output_mat,req_depth,depth+1)
@@ -32,7 +31,7 @@ show(img, "Original Image")
 
 # rotated image matrix initialization
 rotated_image = create_out_mat(img.shape[1], img.shape[0])
-depth = 3
+depth = 1
 #scaled image visualization
 rotation(img, img.shape[0], img.shape[1], 0, 0, rotated_image, depth)
 show(rotated_image, f"Rotated image, Depth: {depth}")
