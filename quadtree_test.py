@@ -7,6 +7,7 @@ from helper import *
 
 
 def new_quad(matrix, rows, cols, row, column, target, path, path_num=1):
+    # base edge cases
     if rows == 1 and cols == 1:
         if matrix[row][column] == target:
             # path[path_num] = [(row, column)]
@@ -54,21 +55,25 @@ def new_quad(matrix, rows, cols, row, column, target, path, path_num=1):
 
     # Cell-Access base case
     if rows <= 2 and cols <= 2:
+        # adding current quadrant to path
         submatrix = []
         found = False
         for i in range(rows):
             row_data = []
             for j in range(cols):
                 row_data.append(matrix[row + i][column + j])
+                # found check for returning purposes
                 if matrix[i][j] == target:
                     found = True
             submatrix.append(row_data)
         path[path_num] = submatrix
+        # found check used
         if found:
             path["target"] = target
             return path
 
     else:
+        # adding current quadrant to path without searching for target
         submatrix = []
         for i in range(rows):
             row_data = []
@@ -76,6 +81,8 @@ def new_quad(matrix, rows, cols, row, column, target, path, path_num=1):
                 row_data.append(matrix[row + i][column + j])
             submatrix.append(row_data)
         path[path_num] = submatrix
+    
+    # recursive calls
     half_r = rows // 2
     extra_r = rows % 2
     half_c = cols // 2
@@ -95,7 +102,7 @@ def new_quad(matrix, rows, cols, row, column, target, path, path_num=1):
     return
 
 def init_mat(size):
-
+    # initializing a square matrix of values based on user input
     vals = [i for i in range(1, size + 1)]
     mat_size = round(size**(1/2))
     mat = [[None for i in range(mat_size)] for j in range(mat_size)]
@@ -107,9 +114,11 @@ def init_mat(size):
     return mat
 
 def main():
+    # mat initialization
     mat = init_mat(64)
     size = len(mat)
     path = new_quad(mat, size, size,0 ,0 , 2, {})
+    # user-friendly path display formatting
     for k, v in path.items():
         print(k, ":")
         print("-----------------")
