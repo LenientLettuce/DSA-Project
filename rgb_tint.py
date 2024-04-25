@@ -105,7 +105,7 @@ def quad_tree(matrix, rows, cols, row, column, dominant_colour, pixels, tint_fac
 
 
             
-image_path = r"colour.jpg"
+image_path = r"Images\\colour.jpg"
 original = read_image(image_path)
 original.show()
 print(create_tinted_image(image_path))
