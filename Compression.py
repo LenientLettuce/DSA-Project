@@ -158,4 +158,4 @@ def create_gif(images,name):
     first = images[0]
     first.save(name + ".gif",format = "GIF", append_images = images, save_all = True, duration = 300, loop = 1)
 
-maind(r"Images\\city.jpeg")
+mainf(r"Images\\city.jpeg")
