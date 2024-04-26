@@ -1,67 +1,85 @@
 from PIL import Image
+from helper import*
 
 def read_image(image_path):
     return Image.open(image_path)
 
 def calculate_gray_value(value):
-    # calculate grayscale value using the luminosity method
-    return int(0.2989 * value + 0.5870 * value + 0.1140 * value)
+    # Calculate grayscale value using the luminosity method using all the RGB channels
+    return int(0.2989 * value[0] + 0.5870 * value[1] + 0.1140 * value[2])
 
-#calls on the quad tree function and creates the grayscale image
+
 def convert_to_grayscale(image_path):
     img = Image.open(image_path)
-
-    pixels = img.load()
-    print(pixels)
+    pixels = img.load()              #gets all the RGB values in tuples from the image
     width, height = img.size
 
-    matrix = [[pixels[x, y][0] for x in range(width)] for y in range(height)]
+    # Create a matrix to store RGB values
+    matrix = []
+    for y in range(height):
+        row = []
+        for x in range(width):
+            row.append(pixels[x, y])
+        matrix.append(row)
+    
+    print(matrix)
 
-    quad_tree(matrix, width, height, 0, 0, pixels)
+    # Process the matrix using quad tree to convert RGB to grayscale
+    quad_tree(matrix, height, width, 0, 0)
 
-    return img
+    # Create a new image from the modified matrix
+    output_img = Image.new("RGB", (width, height))
+    output_pixels = output_img.load()
 
-def quad_tree(matrix, rows, cols, row, column, pixels):
+    for row in range(height):
+        for col in range(width):
+            output_pixels[col, row] = matrix[row][col]
+
+    return output_img
+
+
+def quad_tree(matrix, rows, cols, row, column):
    
     
     if rows == 1 and cols == 1:
-        original_color = pixels[row, column]
-        gray_value = calculate_gray_value(original_color[0])  # assuming grayscale is in the first channel
-        pixels[row, column] = (gray_value, gray_value, gray_value)  # set RGB values for grayscale
+        original_color = matrix[row][column]
+        gray_value = calculate_gray_value(original_color) 
+        matrix[row][column] = (gray_value, gray_value, gray_value)  # Set RGB values for grayscale
         return
     
     elif rows == 1:
         
         for i in range(0,cols):
-            original_color = pixels[row, column+i]
-            gray_value = calculate_gray_value(original_color[0])
-            pixels[row, column+i] = (gray_value, gray_value, gray_value)
+            original_color = matrix[row][column+i]
+            gray_value = calculate_gray_value(original_color)
+            matrix[row][column+i] = (gray_value, gray_value, gray_value)
         return
     elif cols == 1:
         
         for j in range(0,rows):
-            original_color = pixels[row+j, column]
-            gray_value = calculate_gray_value(original_color[0])
-            pixels[row+j, column] = (gray_value, gray_value, gray_value)
+            original_color = matrix[row+j][column]
+            gray_value = calculate_gray_value(original_color)
+            matrix[row+j][column] = (gray_value, gray_value, gray_value)
         return
     
     half_r = rows // 2
     extra_r = rows % 2
     half_c = cols // 2
     extra_c = cols % 2
-    quad_tree(matrix, half_r, half_c, row, column, pixels)
+    quad_tree(matrix, half_r, half_c, row, column)
 
-    quad_tree(matrix, half_r, half_c + extra_c, row, column + half_c,pixels)
+    quad_tree(matrix, half_r, half_c + extra_c, row, column + half_c)
 
-    quad_tree(matrix, half_r + extra_r, half_c, row + half_r, column, pixels)
+    quad_tree(matrix, half_r + extra_r, half_c, row + half_r, column)
 
-    quad_tree(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c, pixels)
+    quad_tree(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c)
 
 
-            
-image_path = r"nature.jpg"
+           
+image_path = r"city 2.jpg"
+#show original image
 original = read_image(image_path)
 original.show()
-
+#show grayscale image
 grayscale = convert_to_grayscale(image_path)
 grayscale.show()
