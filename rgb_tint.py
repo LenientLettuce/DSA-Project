@@ -59,9 +59,6 @@ def create_tinted_image(image_path, tint_factor=0.2):
     return output_img
 
 def quad_tree(matrix, rows, cols, row, column, dominant_colour,  tint_factor):
-    img= read_image(image_path)
-    
-
     if rows == 1 and cols == 1:  # terminate recursion if the quadrant size is too small
        
         original_color = matrix[row][column]
@@ -119,7 +116,7 @@ def quad_tree(matrix, rows, cols, row, column, dominant_colour,  tint_factor):
 
 
             
-image_path = r"colour.jpg"
+image_path = r"Images\\colour.jpg"
 original = read_image(image_path)
 original.show()
 print(create_tinted_image(image_path))

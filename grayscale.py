@@ -22,10 +22,9 @@ def convert_to_grayscale(image_path):
             row.append(pixels[x, y])
         matrix.append(row)
     
-    print(matrix)
-
+    
     # Process the matrix using quad tree to convert RGB to grayscale
-    quad_tree(matrix, height, width, 0, 0)
+    gray_scale(matrix, height, width, 0, 0)
 
     # Create a new image from the modified matrix
     output_img = Image.new("RGB", (width, height))
@@ -38,7 +37,7 @@ def convert_to_grayscale(image_path):
     return output_img
 
 
-def quad_tree(matrix, rows, cols, row, column):
+def gray_scale(matrix, rows, cols, row, column):
    
     
     if rows == 1 and cols == 1:
@@ -66,17 +65,17 @@ def quad_tree(matrix, rows, cols, row, column):
     extra_r = rows % 2
     half_c = cols // 2
     extra_c = cols % 2
-    quad_tree(matrix, half_r, half_c, row, column)
+    gray_scale(matrix, half_r, half_c, row, column)
 
-    quad_tree(matrix, half_r, half_c + extra_c, row, column + half_c)
+    gray_scale(matrix, half_r, half_c + extra_c, row, column + half_c)
 
-    quad_tree(matrix, half_r + extra_r, half_c, row + half_r, column)
+    gray_scale(matrix, half_r + extra_r, half_c, row + half_r, column)
 
-    quad_tree(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c)
+    gray_scale(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c)
 
 
            
-image_path = r"city 2.jpg"
+image_path = r"Images\\city.jpeg"
 #show original image
 original = read_image(image_path)
 original.show()

@@ -125,7 +125,7 @@ def mainf(image):
     print("Image Compressed")
 
     print("Saving Compressed Image")
-    name = "Compressed8K"
+    name = "CompressedCity"
     conv_mat_img(output_matrix,name)#converting output matrix to image and saving it
     print("Complete")
 

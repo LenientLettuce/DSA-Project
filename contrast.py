@@ -24,7 +24,7 @@ def create_contrast_image(image_path, contrast_factor=1.5):
     
 
     # Process the matrix using quad tree to convert RGB to grayscale
-    quad_tree(matrix, height, width, 0, 0, pixels, contrast_factor)
+    img_comp(matrix, height, width, 0, 0, contrast_factor)
 
     # Create a new image from the modified matrix
     output_img = Image.new("RGB", (width, height))
@@ -37,7 +37,7 @@ def create_contrast_image(image_path, contrast_factor=1.5):
     return output_img
 
 # quad tree function to apply contrast 
-def quad_tree(matrix, rows, cols, row, column, pixels, contrast_factor):
+def img_comp(matrix, rows, cols, row, column, contrast_factor):
     # base case: terminate recursion if the quadrant size is too small
     if rows == 1 and cols == 1:
         original_color = matrix[row][column]      #accessing pixels in the row and column
@@ -64,23 +64,19 @@ def quad_tree(matrix, rows, cols, row, column, pixels, contrast_factor):
     extra_c = cols % 2
     
     # apply contrast  recursively to each sub-quadrant
-    quad_tree(matrix, half_r, half_c, row, column, pixels, contrast_factor)
-    quad_tree(matrix, half_r, half_c + extra_c, row, column + half_c, pixels, contrast_factor)
-    quad_tree(matrix, half_r + extra_r, half_c, row + half_r, column, pixels, contrast_factor)
-    quad_tree(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c, pixels, contrast_factor)
+    img_comp(matrix, half_r, half_c, row, column, contrast_factor)
+    img_comp(matrix, half_r, half_c + extra_c, row, column + half_c, contrast_factor)
+    img_comp(matrix, half_r + extra_r, half_c, row + half_r, column, contrast_factor)
+    img_comp(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c, contrast_factor)
 
 
 
 # image file path
-image_path = r"colour.jpg"
+image_path = r"Images//colour.jpg"
 
 # display the original image
 original = read_image(image_path)
 original.show()
-
-#display the contrast-adjusted image
-contrast_image = create_contrast_image(image_path, contrast_factor=1.5)
-contrast_image.show()
 
 #display the contrast-adjusted image
 contrast_image = create_contrast_image(image_path, contrast_factor=1.5)

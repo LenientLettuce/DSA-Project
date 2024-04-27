@@ -46,9 +46,10 @@ def main(filename, depth):
     rotation(img, img.shape[0], img.shape[1], 0, 0, rotated_image, depth)
     show(rotated_image, f"Rotated image, Depth: {depth}")
 
-filename = input("What is the name of the image file you would like to use?\n")
-depth = int(input("What depth would you like to run?\n"))
+# filename = input("What is the name of the image file you would like to use?\n")
+# depth = int(input("What depth would you like to run?\n"))
 
-main(filename, depth)
+# main(filename, depth)
 
-# main("city.jpeg", 1)
+
+main("city.jpeg", 3)
