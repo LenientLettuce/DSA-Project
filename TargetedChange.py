@@ -63,23 +63,20 @@ def write_data(output_matrix, data_matrix,r,c):
 def main(image):
     #Importing Image
     img= read(image)
+    show(img)
     shape = (img.shape)
-    print("Image Imported")
 
     r = shape[0] #Getting the dimensions of the image
     c = shape[1]
     rows = 0
     columns = 0
-    lst = []
+    lst = [1,2]
     output_matrix = create_out_mat(r,c) #Creating the matrix which will eventually become the
                                         #compressed image
-    print("Output Matrix Created")
     write_data(output_matrix, img,r,c)
     target(r,c,rows,columns,lst,output_matrix)
 
-    print("Saving Image")
-    name = "TargetCity"
-    conv_mat_img(output_matrix,name)#converting output matrix to image and saving it
+    conv_mat_img(output_matrix)#converting output matrix to image and saving it
     print("Complete")
 
 main(r"Images\\city.jpeg")

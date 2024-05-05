@@ -99,28 +99,27 @@ def upscale1(img_path):
 def main(filename, scale_factor):
     # image initialization & visualization
     img = read(f"Images\\{filename}")
-    show(img, "Original Image")
+    show(img)
 
     # scaled image matrix initialization
     scaled_image = create_out_mat(img.shape[0]//scale_factor, img.shape[1]//scale_factor)
 
     #scaled image visualization
     new_quad(img, img.shape[0], img.shape[1], 0, 0, scaled_image, scale_factor)
-    show(scaled_image, f"Scaled image, Scale Factor: {scale_factor}")
 
-    conv_mat_img(scaled_image, "Interpolation\\downscale_test")
+    conv_mat_img(scaled_image)
+    save_img(scaled_image,"Images\\Interpolation\\downscale_test.jpg")
     downscaled_path = "Images\\Interpolation\\downscale_test.jpg"
     image = upscale1(downscaled_path)
-    conv_mat_img(image,"Interpolation\\upscaled_Test")
-    show(image, f"Upscaled from downscaled image | Scale Factor: 4")
+    conv_mat_img(image)
 
-filename = input("What is the name of the image file you would like to use?\n")
-scale_factor = int(input("What scale_factor would you like to run? Choose 4 or 8\n"))
+#filename = input("What is the name of the image file you would like to use?\n")
+#scale_factor = int(input("What scale_factor would you like to run? Choose 4 or 8\n"))
+#if scale_factor == 4 or scale_factor == 8:
+#    main(filename, scale_factor)
+#else:
+#   print("That is not a valid scale factor.")
 
-if scale_factor == 4 or scale_factor == 8:
-    main(filename, scale_factor)
-else:
-    print("That is not a valid scale factor.")
 
-# main("city.jpeg", 4)
+main("city.jpeg", 4)
 

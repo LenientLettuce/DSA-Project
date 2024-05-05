@@ -28,18 +28,18 @@ def rotation(matrix, r, c, row, column,output_mat,req_depth,depth=1):
 def main(filename, depth):
     # image initialization & visualization
     img = read(f"Images\\{filename}")
-    show(img, "Original Image")
+    show(img)
 
     # rotated image matrix initialization
     rotated_image = create_out_mat(img.shape[1], img.shape[0])
     #scaled image visualization
     rotation(img, img.shape[0], img.shape[1], 0, 0, rotated_image, depth)
-    show(rotated_image, f"Rotated image, Depth: {depth}")
+    conv_mat_img(rotated_image)
 
     
-filename = input("What is the name of the image file you would like to use?\n")
-depth = int(input("What depth would you like to run?\n"))
+#filename = input("What is the name of the image file you would like to use?\n")
+#depth = int(input("What depth would you like to run?\n"))
 
-main(filename, depth)
+#main(filename, depth)
 
-# main("city.jpeg", 1)
+main("city.jpeg", 1)

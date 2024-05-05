@@ -8,10 +8,9 @@ def read(filename):
     img = plt.imread(filename)
     return img
 
-def show(img,title):
-    plt.imshow(img)
-    plt.title(title)
-    plt.show()
+def show(img):
+    image = Image.fromarray(img, mode="RGB")
+    image.show()
 
 def def_mat (r,c):
     output = np.random.randint(100, size=(r,c))
@@ -21,9 +20,13 @@ def create_out_mat(r,c): #Creates a 3D matrix which stores RGB Values
     output = np.zeros((r,c,3),dtype=np.uint8)
     return output
 
-def conv_mat_img(image_data,name):
+def conv_mat_img(image_data):
     image = Image.fromarray(image_data, mode="RGB")
-    image.save("Images\\" + name + ".jpg")
+    image.show()
+
+def save_img(image_data,name):
+    image = Image.fromarray(image_data, mode="RGB")
+    image.save(name)
 
 def read_image(image_path):
     return Image.open(image_path)
