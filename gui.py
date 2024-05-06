@@ -10,6 +10,8 @@ from Compression import maind as compression_gif
 from rotation_shift import main as rotation_main
 from tinted import main as tint_dominant_main
 from rgb_tint import main as tint_rgb_main
+from contrast import main as contrast_main
+from grayscale import main as grayscale_main
 
 
 
@@ -34,7 +36,7 @@ def color_page():
     title = tk.Label(page, text="Color Manipulation", font=title_font)
     title.pack(ipady=15, ipadx=10)
 
-    button_contrast = tk.Button(page, text="Image Contrast Shift", width=30, command=lambda: (page.destroy(), grayscale_page())).pack(anchor="center",pady=4)
+    button_contrast = tk.Button(page, text="Image Contrast Shift", width=30, command=lambda: (page.destroy(), contrast_page())).pack(anchor="center",pady=4)
     button_grayscale = tk.Button(page, text="Image Grayscale Shift", width=30, command=lambda: (page.destroy(), grayscale_page())).pack(anchor="center",pady=4)
     button_tinted = tk.Button(page, text="Image Tint", width=30, command=lambda: (page.destroy(), tint_page())).pack(anchor="center",pady=4)
 
@@ -67,7 +69,7 @@ def contrast_page():
     filename_display.pack(side="right", ipady=5, padx=8)
 
     # image display
-    display_original = tk.Button(page, text="Display Original", width=15)
+    display_original = tk.Button(page, text="Display Original", width=15, command=lambda: show_original(filename))
     display_original.pack(anchor="w", padx=8, ipady=5)
 
     # contrast frame
@@ -75,7 +77,7 @@ def contrast_page():
     contrast_frame.pack(fill="x", pady=5)
 
     # run function and display
-    contrast_button = tk.Button(contrast_frame, text="Grayscale", width=15, command=lambda: tint())
+    contrast_button = tk.Button(contrast_frame, text="Contrast", width=15, command=lambda: contrast_main(filename))
     contrast_button.pack(side="right", ipady=5, padx=10)
 
     space = tk.Label(page, text="").pack(ipady=5)
@@ -109,7 +111,7 @@ def grayscale_page():
     filename_display.pack(side="right", ipady=5, padx=8)
 
     # image display
-    display_original = tk.Button(page, text="Display Original", width=15)
+    display_original = tk.Button(page, text="Display Original", width=15, command=lambda: show_original(filename))
     display_original.pack(anchor="w", padx=8, ipady=5)
 
     # grayscale frame
@@ -117,7 +119,7 @@ def grayscale_page():
     grayscale_frame.pack(fill="x", pady=5)
 
     # run function and display
-    grayscale_button = tk.Button(grayscale_frame, text="Grayscale", width=15, command=lambda: tint())
+    grayscale_button = tk.Button(grayscale_frame, text="Grayscale", width=15, command=lambda: grayscale_main(filename))
     grayscale_button.pack(side="right", ipady=5, padx=10)
 
     space = tk.Label(page, text="").pack(ipady=5)

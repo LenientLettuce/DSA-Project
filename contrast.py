@@ -70,16 +70,16 @@ def img_comp(matrix, rows, cols, row, column, contrast_factor):
     img_comp(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c, contrast_factor)
 
 
-def main(image_path):
+def main(image):
     # image file path
-    image_path = r"Images//colour.jpg"
+    image_path = f"Images\\{image}"
 
     # display the original image
-    original = read_image(image_path)
-    original.show()
+    # original = read_image(image_path)
+    # original.show()
 
     #display the contrast-adjusted image
     contrast_image = create_contrast_image(image_path, contrast_factor=3)
     contrast_image.show()
 
-main(image_path="")
+# main(image_path="")

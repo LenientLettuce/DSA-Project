@@ -74,13 +74,13 @@ def gray_scale(matrix, rows, cols, row, column):
     gray_scale(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c)
 
 
-def main(image_path):
-    image_path = r"Images\\city.jpeg"
+def main(image):
+    image_path = f"Images\\{image}"
     #show original image
-    original = read_image(image_path)
-    original.show()
+    #original = read_image(image_path)
+    # original.show()
     #show grayscale image
     grayscale = convert_to_grayscale(image_path)
     grayscale.show()
 
-main(image_path="")
+# main(image_path="")
