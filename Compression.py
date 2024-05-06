@@ -104,10 +104,10 @@ def depth_compression(matrix, r, c, row, column,depth,req_depth,output_matrix):
     return
 
         
-def mainf(image):
+def mainf(image, strength=50):
     #Importing Image
     img= read(image)
-    show(img)
+    # show(img)
     shape = (img.shape)
     print("Image Imported")
 
@@ -115,8 +115,8 @@ def mainf(image):
     c = shape[1]
     rows = 0
     columns = 0
-    stregth = 50 #setting threshold strength
-    threshold = [stregth,stregth,stregth]
+    # strength = 50 #setting threshold strength
+    threshold = [strength,strength,strength]
     output_matrix = create_out_mat(r,c) #Creating the matrix which will eventually become the
                                         #compressed image
     print("Output Matrix Created")
@@ -158,4 +158,4 @@ def create_gif(images,name):
     first = images[0]
     first.save(name + ".gif",format = "GIF", append_images = images, save_all = True, duration = 300, loop = 1)
 
-mainf(r"Images\\flower.jpg")
+# mainf(r"Images\\flower.jpg")
