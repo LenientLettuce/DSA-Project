@@ -18,7 +18,7 @@ def get_dominant_colour(matrix):
     dominant_colour = max(colour_count, key=colour_count.get)
     return dominant_colour
 
-def create_tinted_image(image_path, tint_factor=0.6):
+def create_tinted_image(image_path, input_colour, tint_factor=0.6):
     img = read_image(image_path)
     pixels = img.load()
 
@@ -30,7 +30,7 @@ def create_tinted_image(image_path, tint_factor=0.6):
             row.append(pixels[x, y])
         matrix.append(row)
 
-    input_colour = input("Enter a colour to tint the image [red/blue/green/dominant]:  ")
+    # input_colour = input("Enter a colour to tint the image [red/blue/green/dominant]:  ")
     red=(255,0,0)
     green=(0,255,0)
     blue=(0,0,255)
@@ -115,11 +115,11 @@ def quad_tree(matrix, rows, cols, row, column, dominant_colour,  tint_factor):
 
 
 
-def main(image_path):
-    image_path = r"Images\\colour.jpg"
-    original = read_image(image_path)
-    original.show()
+def main(image, input_colour):
+    image_path = f"Images\\{image}"
+    #original = read_image(image_path)
+    #original.show()
 
-    tinted_image = create_tinted_image(image_path)
+    tinted_image = create_tinted_image(image_path, input_colour)
 
-main(image_path="")
+# main(image_path="")

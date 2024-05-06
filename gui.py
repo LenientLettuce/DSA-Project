@@ -7,6 +7,9 @@ from downscaling import main as downscaling_main
 from downscaling import original as show_original
 from Compression import mainf as compression_main
 from Compression import maind as compression_gif
+from rotation_shift import main as rotation_main
+from tinted import main as tint_dominant_main
+from rgb_tint import main as tint_rgb_main
 
 
 
@@ -148,7 +151,7 @@ def tint_page():
     filename_display.pack(side="right", ipady=5, padx=8)
 
     # image display
-    display_original = tk.Button(page, text="Display Original", width=15)
+    display_original = tk.Button(page, text="Display Original", width=15, command=lambda: show_original(filename))
     display_original.pack(anchor="w", padx=8, ipady=5)
 
     # tint frame
@@ -162,6 +165,12 @@ def tint_page():
     def on_select(event):
         selected_item = combo_box.get()
 
+    def tint_select(color):
+        if color == "Dominant Color":
+            tint_dominant_main(filename)
+        else:
+            tint_rgb_main(filename, color.lower())
+
     tint_color_label = tk.Label(tint_color_frame, text="Choose Tint Color")
     tint_color_label.pack()
 
@@ -171,7 +180,7 @@ def tint_page():
     combo_box.bind("<<ComboboxSelected>>", on_select)
 
     # run function and display
-    tint_button = tk.Button(tint_frame, text="Tint", width=15, command=lambda: tint())
+    tint_button = tk.Button(tint_frame, text="Tint", width=15, command=lambda: tint_select(combo_box.get()))
     tint_button.pack(side="right", ipady=5, padx=10)
 
     space = tk.Label(page, text="").pack(ipady=5)
@@ -261,7 +270,7 @@ def rotation_shift_page():
     filename_display.pack(side="right", ipady=5, padx=8)
 
     # image display
-    display_original = tk.Button(page, text="Display Original", width=15)
+    display_original = tk.Button(page, text="Display Original", width=15, command=lambda: show_original(filename))
     display_original.pack(anchor="w", padx=8, ipady=5)
 
     # rotate frame
@@ -280,7 +289,7 @@ def rotation_shift_page():
     depth.pack(anchor="w", padx=45)
     
     # run function and display
-    rotate_button = tk.Button(rotate_frame, text="Rotate", width=15, command=lambda: print(v.get()))
+    rotate_button = tk.Button(rotate_frame, text="Rotate", width=15, command=lambda: rotation_main(filename, v.get()))
     rotate_button.pack(side="right", ipady=5, padx=10)
 
     space = tk.Label(page, text="").pack(ipady=5)

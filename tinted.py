@@ -100,15 +100,15 @@ def tinted(matrix, rows, cols, row, column, dominant_colour, tint_factor):
     tinted(matrix, half_r + extra_r, half_c + extra_c, row + half_r, column + half_c, dominant_colour, tint_factor)
 
 
-def main(image_path):
-    image_path = r"Images\\city.jpeg"
+def main(image):
+    image_path = f"Images\\{image}"
     original = read_image(image_path)
-    original.show()
+    # original.show()
 
     tinted_image = create_tinted_image(image_path)
     tinted_image.show()
 
-main(image_path= "")
+# main(image_path= "")
 
 
 

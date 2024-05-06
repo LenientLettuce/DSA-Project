@@ -38,7 +38,7 @@ def rotation(matrix, r, c, row, column,output_mat,req_depth,depth=1):
 def main(filename, depth):
     # image initialization & visualization
     img = read(f"Images\\{filename}")
-    show(img)
+    # show(img)
 
     # rotated image matrix initialization
     rotated_image = create_out_mat(img.shape[0], img.shape[1])
@@ -52,4 +52,4 @@ def main(filename, depth):
 # main(filename, depth)
 
 
-main("city.jpeg", 3)
+# main("city.jpeg", 3)
