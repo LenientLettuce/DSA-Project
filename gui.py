@@ -347,7 +347,7 @@ def compression_page():
     compress_button = tk.Button(compression_frame, text="Compress -> Display", width=15, command=lambda: compression_main(f"Images\\{filename}", v.get()))
     compress_button.pack(side="right", ipady=7, padx=10)
 
-    gif_button = tk.Button(page, text="Create GIF", width=15, command=lambda: compression_gif(f"Images\\{filename}"))
+    gif_button = tk.Button(page, text="GIF menu", width=15, command=lambda: compression_gif_popup(filename))
     gif_button.pack(anchor="e", ipady=5, padx=10)
 
     space = tk.Label(page, text="").pack(ipady=10)
@@ -356,5 +356,21 @@ def compression_page():
     main_return.pack(anchor="sw")
 
     tk.mainloop()
+
+def compression_gif_popup(filename):
+    page = tk.Tk()
+    title = tk.Label(page, text="Compression Gif", font=title_font)
+    title.pack(ipady=15, ipadx=10)
+
+    # gif max depth
+    depth_label = tk.Label(page, text="Choose Depth")
+    depth_label.pack()
+    v = tk.IntVar(value=9)
+
+    depth = tk.Scale(page, from_=1, to=10, variable=v)
+    depth.pack(anchor="center", padx=35, pady=8)
+
+    gif_button = tk.Button(page, text="Create GIF", width=15, command=lambda: compression_gif(f"Images\\{filename}", v.get()))
+    gif_button.pack(anchor="e", ipady=5, padx=10, pady=10)
 
 main_page()

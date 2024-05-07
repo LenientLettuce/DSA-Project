@@ -129,7 +129,7 @@ def mainf(image, strength=50):
     conv_mat_img(output_matrix)#converting output matrix to image and saving it
     print("Complete")
 
-def maind(image):
+def maind(image, depth=9):
     img= read(image)
     shape = (img.shape)
     print("Image Imported")
@@ -144,7 +144,7 @@ def maind(image):
     print("Output Matrix Created")
     print("Compressing Image")
     #Code to make cool gif showing compression
-    for i in range(0,9):
+    for i in range(0,depth):
         depth_compression(img,r,c,rows,columns,0,i,output_matrix)
         image = Image.fromarray(output_matrix, mode="RGB")
         image.save("Images\\Gif\\City" + str(i) + ".jpg")
