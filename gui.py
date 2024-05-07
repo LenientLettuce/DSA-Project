@@ -76,8 +76,23 @@ def contrast_page():
     contrast_frame = tk.Frame(page)
     contrast_frame.pack(fill="x", pady=5)
 
+    # Compression frame
+    compression_frame = tk.Frame(page)
+    compression_frame.pack(fill="x", pady=10)
+    
+    # threshold select
+    threshold_frame = tk.Frame(compression_frame)
+    threshold_frame.pack(side="left", pady=5, padx=10)
+
+    threshold_label = tk.Label(threshold_frame, text="Choose Threshold")
+    threshold_label.pack()
+    v = tk.IntVar(value=50)
+
+    threshold = tk.Scale(page, from_= 1, to=100, variable=v)
+    threshold.pack(anchor="w", padx=35, pady=8)
+
     # run function and display
-    contrast_button = tk.Button(contrast_frame, text="Contrast", width=15, command=lambda: contrast_main(filename))
+    contrast_button = tk.Button(contrast_frame, text="Contrast", width=15, command=lambda: contrast_main(filename,(v.get()/50)))
     contrast_button.pack(side="right", ipady=5, padx=10)
 
     space = tk.Label(page, text="").pack(ipady=5)
@@ -167,11 +182,11 @@ def tint_page():
     def on_select(event):
         selected_item = combo_box.get()
 
-    def tint_select(color):
+    def tint_select(color,tintfactor):
         if color == "Dominant Color":
-            tint_dominant_main(filename)
+            tint_rgb_main(filename,'dominant',tintfactor)
         else:
-            tint_rgb_main(filename, color.lower())
+            tint_rgb_main(filename, color.lower(),tintfactor)
 
     tint_color_label = tk.Label(tint_color_frame, text="Choose Tint Color")
     tint_color_label.pack()
@@ -181,8 +196,23 @@ def tint_page():
     combo_box.set("Dominant Color")
     combo_box.bind("<<ComboboxSelected>>", on_select)
 
+    # Compression frame
+    compression_frame = tk.Frame(page)
+    compression_frame.pack(fill="x", pady=10)
+    
+    # threshold select
+    threshold_frame = tk.Frame(compression_frame)
+    threshold_frame.pack(side="left", pady=5, padx=10)
+
+    threshold_label = tk.Label(threshold_frame, text="Choose Threshold")
+    threshold_label.pack()
+    v = tk.IntVar(value=50)
+
+    threshold = tk.Scale(page, from_= 1, to=100, variable=v)
+    threshold.pack(anchor="w", padx=35, pady=8)
+
     # run function and display
-    tint_button = tk.Button(tint_frame, text="Tint", width=15, command=lambda: tint_select(combo_box.get()))
+    tint_button = tk.Button(tint_frame, text="Tint", width=15, command=lambda: tint_select(combo_box.get(), (v.get()/100)))
     tint_button.pack(side="right", ipady=5, padx=10)
 
     space = tk.Label(page, text="").pack(ipady=5)
