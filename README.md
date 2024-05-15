@@ -1,1 +1,1 @@
-Run "gui.py" to run code
+# run all functions through gui.py
