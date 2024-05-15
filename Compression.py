@@ -156,6 +156,6 @@ def maind(image, depth=9):
 #Function to create gif from given images and then save
 def create_gif(images,name):
     first = images[0]
-    first.save(name + ".gif",format = "GIF", append_images = images, save_all = True, duration = 300, loop = 1)
+    first.save(name + ".gif",format = "GIF", append_images = images, save_all = True, duration = 300, loop = 999)
 
 # mainf(r"Images\\flower.jpg")
